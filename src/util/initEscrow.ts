@@ -62,7 +62,7 @@ export const initEscrow = async (
       AccountLayout.span,
       "singleGossip" // Commitment level
     ), // Initial balance
-    fromPubkey: initializerAccount.publicKey, // Where to transfer balance from
+    fromPubkey: initializerAccount.publicKey, // Where to transfer balance from (Alice's main acct)
     newAccountPubkey: tempTokenAccount.publicKey, // Address of the new account
   });
 
@@ -71,20 +71,20 @@ export const initEscrow = async (
   // she asked System Program to create (above in createTempTokenAccountIx).
   const initTempAccountIx = Token.createInitAccountInstruction(
     TOKEN_PROGRAM_ID, // This temp X token account's owner (per Alice's ix1 instruction)
-    XTokenMintAccountPubkey, // Q: This should be a Solana SPL Token pubkey for X, right?
+    XTokenMintAccountPubkey, // Q: This should be a Solana SPL Token pubkey for X, right? A: Yes! It's the 'mint'
     tempTokenAccount.publicKey, // Alice's temp X token account just created by SP
-    initializerAccount.publicKey // Alice's main account pubkey
+    initializerAccount.publicKey // Alice's main account pubkey (i.e., the owner)
   );
   // NOTE I believe this is the part (ix3 in the slideshow) where Alice's main account
   // asks Token Program to transfer N amount of X tokens from her X token account
   // to her temporary X token account (that was just initialized by TP above!).
   const transferXTokensToTempAccIx = Token.createTransferInstruction(
-    TOKEN_PROGRAM_ID,
-    initializerXTokenAccountPubkey,
-    tempTokenAccount.publicKey,
-    initializerAccount.publicKey,
-    [],
-    amountXTokensToSendToEscrow
+    TOKEN_PROGRAM_ID, // program id that owns this account
+    initializerXTokenAccountPubkey, // source (from account)
+    tempTokenAccount.publicKey, // destination (to account)
+    initializerAccount.publicKey, // owner (aka the account holder I believe)
+    [], // signer
+    amountXTokensToSendToEscrow // amount
   );
 
   // NOTE This is ix4 in slideshow where Alice's main account (initializer) asks
@@ -103,7 +103,6 @@ export const initEscrow = async (
     programId: escrowProgramId,
   });
 
-  // Create another account but this time owned by Escrow Program
   // IMPORTANT This is EXACTLY what our program entrypoint expects!
   // Recall that our process_instruction() takes in the program_id, accounts,
   // and instruction_data and passes these into our Processor::process() fn.
