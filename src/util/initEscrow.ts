@@ -136,7 +136,12 @@ export const initEscrow = async (
     data: Buffer.from(
       // NOTE Start with 0 since the first byte is what we used in instruction.rs
       // as a 'tag' to determine how to decode the instruction.
-      // 0 means InitEscrow. The next bytes will be the expected_amount.
+      // 0 means InitEscrow.
+      // RECALL Inside instruction.rs, we have the EscrowInstruction using the unpack()
+      // function which takes the instruction_data (&[u8]) and matches the 'tag'
+      // (first element in the array). Well, if the 'tag' is 0, then it executes the
+      // InitEscrow instruction. If it's 1, then it will execute Exchange insruction.
+      // The next bytes will be the expected_amount.
       // NOTE We use the bn.js library to write our expected amount as an 8-byte
       // array of little-endian numbers. 8 bytes because inside instruction.rs we
       // decode a u64 and little-endian because we decode the slice with

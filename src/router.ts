@@ -1,20 +1,25 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from "vue-router";
 
-const Alice = () => import("./Alice.vue")
-const Bob = () => import("./Bob.vue")
+const Alice = () => import("./Alice.vue");
+const Bob = () => import("./Bob.vue");
 
 export default createRouter({
-    history: createWebHashHistory(),
-    routes: [
-        {
-            name: "Alice",
-            path: "/",
-            component: Alice
-        },
-        {
-            name: "Bob",
-            path: "/bob",
-            component: Bob
-        }
-    ]
-})
+  // NOTE Use CreateWebHistory to remove the Hash
+  history: createWebHistory(process.env.BASE_URL),
+  routes: [
+    {
+      name: "Alice",
+      path: "/",
+      component: Alice,
+    },
+    {
+      name: "Bob",
+      path: "/bob",
+      component: Bob,
+    },
+  ],
+});

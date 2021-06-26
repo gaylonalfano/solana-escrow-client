@@ -1,6 +1,6 @@
 <template>
   <div class="bg">
-    <p class="title">Escrow UI {{ $route.params }}</p>
+    <p class="title">Escrow UI {{ $route.fullPath }}</p>
     <div>
       <div class="mb-1">
         <label for="2020-12-24-programId-escrow-alice"
