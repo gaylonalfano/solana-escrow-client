@@ -1,45 +1,46 @@
 <template>
-  <!-- <div v-if="walletRef"> -->
-  <!--   <h2>Wallet PubKey: {{ walletRef.publicKey }}</h2> -->
-  <!-- </div> -->
+  <div v-if="walletRef">
+    <h2>Wallet PubKey: {{ walletRef.publicKey }}</h2>
+  </div>
 
   <router-view />
 </template>
 
 
-<!-- <script lang="ts"> -->
-<!-- import { Connection } from "@solana/web3.js"; -->
-<!-- import { defineComponent, watchEffect, ref } from "vue"; -->
-<!-- import { initWallet, WalletAdapter } from "./util/useWallet"; -->
+<script lang="ts">
+/* eslint-disable */
+import { Connection } from "@solana/web3.js";
+import { defineComponent, watchEffect, ref } from "vue";
+import { initWallet, WalletAdapter } from "./util/useWallet";
 
-<!-- export default defineComponent({ -->
-<!--   name: "App", -->
-<!--   setup: () => { -->
-<!--     const connectionRef = ref<Connection>(); -->
-<!--     const walletRef = ref<WalletAdapter>(); -->
+export default defineComponent({
+  name: "App",
+  setup: () => {
+    const connectionRef = ref<Connection>();
+    const walletRef = ref<WalletAdapter>();
 
-<!--     watchEffect(() => { -->
-<!--       console.log("watchEffect triggered"); -->
-<!--       initWallet().then(([connection, wallet]: [Connection, WalletAdapter]) => { -->
-<!--         // Update our Refs so we can reuse inside didSendMoney() -->
-<!--         connectionRef.value = connection; -->
-<!--         walletRef.value = wallet; -->
-<!--         //console.log(connectionRef.value); -->
-<!--         //console.log(walletRef.value); -->
+    watchEffect(() => {
+      console.log("watchEffect triggered");
+      initWallet().then(([connection, wallet]: [Connection, WalletAdapter]) => {
+        // Update our Refs so we can reuse inside didSendMoney()
+        connectionRef.value = connection;
+        walletRef.value = wallet;
+        //console.log(connectionRef.value);
+        //console.log(walletRef.value);
 
-<!--         // Make sure wallet has publicKey -->
-<!--         // Q: Should I check walletRef or just wallet? -->
-<!--         if (wallet.publicKey) { -->
-<!--           console.log("walletRef.value.publicKey: ", walletRef.value.publicKey); // Proxy -->
-<!--           console.log("wallet.publicKey: ", wallet.publicKey); // PublicKey -->
-<!--         } -->
-<!--       }); -->
-<!--     }); -->
+        // Make sure wallet has publicKey
+        // Q: Should I check walletRef or just wallet?
+        if (wallet.publicKey) {
+          console.log("walletRef.value.publicKey: ", walletRef.value.publicKey); // Proxy
+          console.log("wallet.publicKey: ", wallet.publicKey); // PublicKey
+        }
+      });
+    });
 
-<!--     return { walletRef }; -->
-<!--   }, -->
-<!-- }); -->
-<!-- </script> -->
+    return { walletRef };
+  },
+});
+</script>
 
 
 <style>

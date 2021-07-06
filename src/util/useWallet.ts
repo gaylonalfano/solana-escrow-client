@@ -23,8 +23,8 @@ export interface WalletAdapter extends EventEmitter {
 
 // === Setup base fields we need
 // const cluster = "https://devnet.solana.com";  // OLD
-const cluster = "https://api.devnet.solana.com";
-// const cluster = "http://localhost:8899";  // Must use CLI solana-test-validator
+// const cluster = "https://api.devnet.solana.com";
+const cluster = "http://localhost:8899"; // Must use CLI solana-test-validator
 // NOTE "confirmed" is the confirmation level we're going to use
 // when querying the blockchain. There are other levels (final for 2/3 nodes),
 // but "confirmed" is confirmation by one node.
